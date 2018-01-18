@@ -12,8 +12,10 @@ curl -sL "https://cdn.rawgit.com/everypolitician/everypolitician-data/09f85d3081
 
 cat ../data/everypoliticianItaliaPersons.csv > ../tmp/everypoliticianItaliaPersons.csv
 
+# faccio il join con la tabella che contiene i datti sugli account twitter e creo CSV che li contiene
 csvsql -I --query "select A.*,B.twitter from everypoliticianItaliaPersons AS A LEFT JOIN everypoliticianItaliaPersonsTwitter AS B on A.id=B.id" ../tmp/everypoliticianItaliaPersons.csv ../data/everypoliticianItaliaPersonsTwitter.csv > ../data/everypoliticianItaliaPersons.csv
 
 rm ../data/everypoliticianItaliaPersonsTwitter.csv
 
+# estraggo il JSON con i dati twitter
 csvjson -I ../data/everypoliticianItaliaPersons.csv | jq . > ../data/everypoliticianItaliaPersons.json
