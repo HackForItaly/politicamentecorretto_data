@@ -32,7 +32,7 @@ curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vTquc_cJduDFPPrXtZvS22
 
 < "$cartella"/../data/unapromessa_raw.csv csvcut -c 1,2,3,4,5,6 > "$cartella"/../data/unapromessa_raw_clean.csv
 
-< "$cartella"/../data/unapromessa_raw_cleancsv csvgrep -c "immagine" -i -r "^$" > "$cartella"/../data/unapromessa.csv
+< "$cartella"/../data/unapromessa_raw_cleancsv csvgrep -c "immagine" -i -r "^http.*$" > "$cartella"/../data/unapromessa.csv
 
 csvjson -I "$cartella"/../data/unapromessa.csv | jq . > "$cartella"/../data/unapromessa.json
 
