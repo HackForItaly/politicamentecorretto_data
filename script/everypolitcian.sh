@@ -34,6 +34,6 @@ curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vTquc_cJduDFPPrXtZvS22
 
 csvjson -I "$cartella"/../data/unapromessa.csv | jq . > "$cartella"/../data/unapromessa.json
 
-cat "$cartella"/../data/unapromessa.json > "$web"/../data/unapromessa.json
+cat "$cartella"/../data/unapromessa.json > "$web"/unapromessa.json
 
-cat "$cartella"/../data/unapromessa.csv > "$web"/../data/unapromessa.csv
+cat "$cartella"/../data/unapromessa.csv > "$web"/unapromessa.csv
