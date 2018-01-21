@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 <<comment1
 comment1
 # scarico il dataset di base di everypolitician
@@ -22,8 +24,16 @@ comment1
 # estraggo il JSON con i dati twitter
 #csvjson -I ../data/everypoliticianItaliaPersons.csv | jq . > ../data/everypoliticianItaliaPersons.json
 
-curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vTquc_cJduDFPPrXtZvS22SD0L_hy5mQaaOH2__QKF4Fi8Y-QcKNN8gXVUatOr-TPuTv6gTEZ0rB0W6/pub?gid=249352183&single=true&output=csv" > ../data/unapromessa_raw.csv
+cartella="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-< ../data/unapromessa_raw.csv csvgrep -c "immagine" -i -r "^$" > ../data/unapromessa.csv
+web="/home/ondata/domains/dev.ondata.it/public_html/projs/people/andy/unapromessa"
 
-csvjson -I ../data/unapromessa.csv | jq . > ../data/unapromessa.json
+curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vTquc_cJduDFPPrXtZvS22SD0L_hy5mQaaOH2__QKF4Fi8Y-QcKNN8gXVUatOr-TPuTv6gTEZ0rB0W6/pub?gid=249352183&single=true&output=csv" > "$cartella"/../data/unapromessa_raw.csv
+
+< "$cartella"/../data/unapromessa_raw.csv csvgrep -c "immagine" -i -r "^$" > "$cartella"/../data/unapromessa.csv
+
+csvjson -I "$cartella"/../data/unapromessa.csv | jq . > "$cartella"/../data/unapromessa.json
+
+cat "$cartella"/../data/unapromessa.json > "$web"/../data/unapromessa.json
+
+cat "$cartella"/../data/unapromessa.csv > "$web"/../data/unapromessa.csv
