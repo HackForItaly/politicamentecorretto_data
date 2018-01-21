@@ -30,7 +30,9 @@ web="/home/ondata/domains/dev.ondata.it/public_html/projs/people/andy/unapromess
 
 curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vTquc_cJduDFPPrXtZvS22SD0L_hy5mQaaOH2__QKF4Fi8Y-QcKNN8gXVUatOr-TPuTv6gTEZ0rB0W6/pub?gid=249352183&single=true&output=csv" > "$cartella"/../data/unapromessa_raw.csv
 
-< "$cartella"/../data/unapromessa_raw.csv csvgrep -c "immagine" -i -r "^$" > "$cartella"/../data/unapromessa.csv
+< "$cartella"/../data/unapromessa_raw.csv csvcut -c 1,2,3,4,5,6 > "$cartella"/../data/unapromessa_raw_clean.csv
+
+< "$cartella"/../data/unapromessa_raw_cleancsv csvgrep -c "immagine" -i -r "^$" > "$cartella"/../data/unapromessa.csv
 
 csvjson -I "$cartella"/../data/unapromessa.csv | jq . > "$cartella"/../data/unapromessa.json
 
