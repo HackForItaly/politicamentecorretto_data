@@ -24,18 +24,24 @@ comment1
 # estraggo il JSON con i dati twitter
 #csvjson -I ../data/everypoliticianItaliaPersons.csv | jq . > ../data/everypoliticianItaliaPersons.json
 
+# imposto una variabile per settare il path assoluto dello script
 cartella="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# una cartella pubblica di export dei dati
 web="/home/ondata/domains/dev.ondata.it/public_html/projs/people/andy/unapromessa"
 
+# scarico i dati dall'anagrafica di una promessa http://bit.ly/2n1340b
 curl -sL "https://docs.google.com/spreadsheets/d/e/2PACX-1vTquc_cJduDFPPrXtZvS22SD0L_hy5mQaaOH2__QKF4Fi8Y-QcKNN8gXVUatOr-TPuTv6gTEZ0rB0W6/pub?gid=249352183&single=true&output=csv" > "$cartella"/../data/unapromessa_raw.csv
 
+# rimuovo le colonne che non servono
 < "$cartella"/../data/unapromessa_raw.csv csvcut -c 1,2,3,4,5,6 > "$cartella"/../data/unapromessa_raw_clean.csv
 
+# rimuovo le righe per cui non è associata un'immagine al candidato
 < "$cartella"/../data/unapromessa_raw_clean.csv csvgrep -c "immagine"  -r "^http.*$" > "$cartella"/../data/unapromessa.csv
 
+# converto i dati in JSON
 csvjson -I "$cartella"/../data/unapromessa.csv | jq . > "$cartella"/../data/unapromessa.json
 
+# pubblico online JSON e CSV
 cat "$cartella"/../data/unapromessa.json > "$web"/unapromessa.json
-
 cat "$cartella"/../data/unapromessa.csv > "$web"/unapromessa.csv
