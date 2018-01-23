@@ -48,3 +48,4 @@ csvjson -I "$cartella"/../data/unapromessa.csv | jq . > "$cartella"/../data/unap
 # pubblico online JSON e CSV
 cat "$cartella"/../data/unapromessa.json > "$web"/unapromessa.json
 cat "$cartella"/../data/unapromessa.csv > "$web"/unapromessa.csv
+
