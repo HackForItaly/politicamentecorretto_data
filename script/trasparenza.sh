@@ -17,7 +17,9 @@ csvsql -I --query 'select *, ("file"||programma) as nomefile from trasparenzaEle
 
 cat "$cartella"/../tmp/trasparenzaElezioni.csv > "$cartella"/../elezioniTrasparenza/trasparenzaElezioni.csv
 
-cat "$cartella"/../tmp/trasparenzaElezioni.csv | csvjson | jq . > "$cartella"/../elezioniTrasparenza/trasparenzaElezioni.json 
+cat "$cartella"/../tmp/trasparenzaElezioni.csv | csvjson | jq . > "$cartella"/../elezioniTrasparenza/trasparenzaElezioni.json
+
+cat "$cartella"/../elezioniTrasparenza/trasparenzaElezioni.json | jq '[.[] | {partito:.partito,link:.programma,evento:"Elezioni Politiche 2018",amministrazione:"Governo Nazionale"}]' | yq . -y > "$cartella"/../elezioniTrasparenza/trasparenzaElezioni.yaml
 
 csvformat -T "$cartella"/../tmp/trasparenzaElezioni.csv >"$cartella"/../tmp/trasparenzaElezioni_tmp.csv
 
