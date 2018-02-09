@@ -10,12 +10,11 @@ set -x
 
 <<comment1
 comment1
-# scarico il dataset di base di everypolitician
-#curl -sL "https://cdn.rawgit.com/everypolitician/everypolitician-data/09f85d30811e3e5f7bd6227480f6dfb0b447b4f9/data/Italy/House/ep-popolo-v1.0.json" > ../data/everypoliticianItalia.json
+# scarico il dataset di base di everypolitician sulla Camera
+#curl -sL "https://cdn.rawgit.com/everypolitician/everypolitician-data/09f85d30811e3e5f7bd6227480f6dfb0b447b4f9/data/Italy/House/ep-popolo-v1.0.json" > "$cartella"/../data/everypoliticianItalia.json
 
 # estraggo info di base (ID WikiDATA, URL Immagine e nome, ecc.)
 #< "$cartella"/../data/everypoliticianItalia.json jq '[.persons[] | {wikidata:.identifiers[]| select(.scheme | contains("wikidata"))|.identifier,immagine:.image,nome:.name,everypolitician_legacy:.identifiers[]| select(.scheme | contains("everypolitician_legacy"))|.identifier,wikipediaIT:.links[]| select(.note | contains("Wikipedia (it)"))|.url,id:.id,idItalia:.identifiers[]| select(.scheme | contains("italian_cod"))|.identifier?}]' | tee "$cartella"/../data/everypoliticianItaliaPersons.json | in2csv -I -f json > "$cartella"/../data/everypoliticianItaliaPersons.csv
-
 
 
 # estraggo info di base (ID WikiDATA, URL Immagine e nome, ecc.)
@@ -31,6 +30,14 @@ comment1
 # estraggo il JSON con i dati twitter
 #csvjson -I "$cartella"/../data/everypoliticianItaliaPersons.csv | jq . > "$cartella"/../data/everypoliticianItaliaPersons.json
 
+# scarico i dati sul Senato
+
+curl -sL "https://cdn.rawgit.com/everypolitician/everypolitician-data/5b372955b1c49b9ccd6caf5a60f3f3472d6eeeb0/data/Italy/Senate/term-17.csv" > "$cartella"/../data/everypoliticianItalia_Senato.csv
+
+curl -sL "https://cdn.rawgit.com/everypolitician/everypolitician-data/ff13c19834cda6806374cbcbb19d6f86b345ae95/data/Italy/Senate/ep-popolo-v1.0.json" > "$cartella"/../data/everypoliticianItalia_Senato.json
+
+# estraggo info di base (ID WikiDATA, URL Immagine e nome, ecc.)
+< "$cartella"/../data/everypoliticianItalia_Senato.json jq '[.persons[] | {wikidata:.identifiers[]?| select(.scheme | contains("wikidata"))|.identifier?,immagine:.image?,nome:.name?,everypolitician_legacy:.identifiers[]?| select(.scheme | contains("everypolitician_legacy"))|.identifier?,wikipediaIT:.links[]?| select(.note | contains("Wikipedia (it)"))|.url?,id:.id?,idItalia:.identifiers[]?| select(.scheme | contains("italian_cod"))|.identifier?}]' | tee "$cartella"/../data/everypoliticianItaliaPersonsSenato.json | in2csv -I -f json > "$cartella"/../data/everypoliticianItaliaPersonsSenato.csv
 
 
 # scarico i dati dall'anagrafica di una promessa http://bit.ly/2n1340b
